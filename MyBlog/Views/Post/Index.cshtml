@@ -1,0 +1,92 @@
+﻿@model PagedList.IPagedList<MyBlog.Models.Post>
+
+@{
+    ViewBag.Title = "Posts";
+}
+
+ 
+<h2>Posts </h2>
+
+<p>
+    @Html.ActionLink("Create a  New Post! ", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Comments)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comments)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PostId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PostId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PostId })
+        </td>
+    </tr>
+}
+
+ @*pagination*@
+
+</table>
+<div>
+    @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    { 
+    @Html.ActionLink("<<", "Index", new { page = 1})
+    @Html.Raw(" ");
+        @Html.ActionLink("<prev", "Index", new { page = Model.PageNumber-1})
+        
+    }
+    else
+    { 
+    @:<<
+    @Html.Raw("");
+        @:< Prev
+    }
+    @if (Model.HasNextPage)
+    { 
+    @Html.ActionLink("next", "Index", new { page = Model.PageNumber +1})
+    @Html.Raw(""); 
+    @Html.ActionLink(">>", "Index", new {page = Model.PageCount })   
+    
+    }
+
+    else
+    { 
+    @:Next >
+    @Html.Raw("");
+    @:>>
+    }
+</div>
